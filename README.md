@@ -1,42 +1,35 @@
-# RC Circuit Lab
+# Mô phỏng mạch RC
 
-RC Circuit Lab shows how a capacitor charges and discharges. Change the resistance, capacitance or starting voltage and see the voltage and current change over time.
+Thay đổi điện trở, điện dung hoặc điện áp để xem tụ điện nạp và xả như thế nào. Đường cong cho thấy điện áp trên tụ theo thời gian. Bạn có thể tải bảng số liệu để xem lại.
 
-The app draws two voltage curves: one from a formula and one calculated step by step. Comparing them makes it easier to check the calculation.
+Code được trích từ phần mô phỏng RC của VoltKit, sau đó Việt hóa và chỉ giữ những phần cần dùng. Công thức của dự án gốc được giữ nguyên.
 
-![Charging a capacitor](reports/charging.png)
+## Chạy trên máy
 
-## Run the app
-
-Use Python 3.12. On Windows, run `CAI_DAT.bat`, then `CHAY_DEMO.bat`.
-
-From a terminal:
+Cài Python 3.12. Trên Windows, chạy `CAI_DAT.bat` một lần, rồi mở `CHAY_DEMO.bat`.
 
 ```bash
 python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-Once the packages are installed, the app works offline. You can save the values as CSV and the chart as PNG.
+Sau khi cài các thư viện, chương trình có thể chạy không cần mạng.
 
-## Reading the curves
+## Quan sát điều gì?
 
-The time constant is R multiplied by C. A larger value means a slower change. Starting from zero, the capacitor reaches about 63.2% of the source voltage after one time constant, and about 99.3% after five.
+Khi nạp từ 0 V, điện áp trên tụ tăng dần đến gần điện áp nguồn. Khi xả, điện áp giảm dần về gần 0 V.
 
-During discharge, the current appears negative because it flows against the direction used as the reference. This is expected.
+Tích R × C là hằng số thời gian. Tăng điện trở hoặc điện dung làm quá trình chậm hơn. Biểu đồ luôn vẽ đến năm lần hằng số này, vì vậy bạn cần nhìn cả trục thời gian khi so sánh hai lần chạy.
 
-The screen takes capacitance in microfarads and converts it to farads for the calculation.
+Đây là mạch lý tưởng. Chưa xét sai số linh kiện hoặc số đo trên phần cứng.
 
-## Check the results
+## Đọc code
+
+`app.py` tạo các nút chọn và vẽ đồ thị. `voltkit/core/simulator.py` tính điện áp khi nạp; `voltkit/core/transient.py` tính điện áp khi xả.
 
 ```bash
-python generate_report.py
 python -m pip install -r requirements-dev.txt
 python -m pytest -q
 ```
 
-For the two included 5 V examples, the largest difference between the calculated voltage and the formula is below 1.2 × 10⁻⁹ V. The full values and charts are in `reports/`.
-
-This is an ideal circuit model. It does not include component tolerances or measurements from physical hardware.
-
-The calculation is in `circuitlab/simulation.py`; charts are drawn in `plotting.py`. Built with Python, NumPy, SciPy, pandas, Matplotlib and Streamlit. Project code uses the MIT license.
+Xem [NGUON.md](NGUON.md) để biết tệp gốc và phần đã chỉnh. Giữ giấy phép MIT của Shobhit Bhardwaj.
